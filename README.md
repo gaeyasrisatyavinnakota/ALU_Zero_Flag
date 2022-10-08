@@ -91,8 +91,8 @@ The ALU operations is as shown below,
   </tr>
 </table>
 The code used is given below,
-```
 
+```
 module VGSS_ALU(
 	input [31:0] ALU_IN1,ALU_IN2,
 	input [3:0] ALU_SEL,
@@ -138,17 +138,7 @@ default: ALU_OUT = ALU_IN1;
 endcase
 end
 endmodule
-
 ```
-
-<!---
-| S<sub>0</sub> | S<sub>1</sub> | Out |
-|    :----:   |    :----:   |    :----:   |
-|0|0|D|
-|0|1|C|
-|1|0|B|
-|1|1|A|
---->
 
 ## Output Waveforms
 

@@ -18,7 +18,7 @@ This report describes the design and Implementation of 32 bit ALU with zero flag
 Circuit designed is as shown below
 <figure>
 <p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(367).png" width="300" height ="300"></p>
-<figcaption><p align = "center">Figure(1) 4:1 MUX Representation</p></figcaption>
+<figcaption><p align = "center">Figure Circuit Implementation </p></figcaption>
 </figure>
 
 The ALU operations is as shown below,
@@ -90,8 +90,9 @@ The ALU operations is as shown below,
     <td>rotate left</td>
   </tr>
 </table>
-the code used is given below,
+The code used is given below,
 ```
+
 module VGSS_ALU(
 	input [31:0] ALU_IN1,ALU_IN2,
 	input [3:0] ALU_SEL,
@@ -137,7 +138,9 @@ default: ALU_OUT = ALU_IN1;
 endcase
 end
 endmodule
+
 ```
+
 <!---
 | S<sub>0</sub> | S<sub>1</sub> | Out |
 |    :----:   |    :----:   |    :----:   |
@@ -146,18 +149,13 @@ endmodule
 |1|0|B|
 |1|1|A|
 --->
-## Working of the Circuit
 
-- When both the select lines are logic 0, NMOS in the pull-down network and PMOS  in the pull-up network of D input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the D input line.
-- When select lines 0 is logic 0 and select line 1 is logic 1, NMOS in the pull-down network and PMOS  in the pull-up network of C input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the C input line.
-- When select lines 0 is logic 1 and select line 1 is logic 0, NMOS in the pull-down network and PMOS  in the pull-up network of B input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the B input line.
-- When both the select lines are logic 1, NMOS in the pull-down network and PMOS  in the pull-up network of A input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the A input line.
 ## Output Waveforms
 
 
 The output waveforms obtained after the simulation are as shown below
 <figure>
-<p align="center"><img src=""https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(366).png" width="1000" height ="300"></p>
+<p align="center"><img src=""https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(365).png" width="1000" height ="300"></p>
 <figcaption><p align = "center"> Waveforms obtained</p></figcaption>
 </figure>
 

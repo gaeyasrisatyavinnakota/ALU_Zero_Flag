@@ -29,50 +29,115 @@ The ALU operations is as shown below,
     <th>operation</th>
   </tr>
   <tr>
-    <td>4'b000</td>
+    <td>4'b0000</td>
     <td>addition</td>
   </tr>
   <tr>
     <td>4'b0001</td>
     <td>Subtraction</td>
   </tr>
+  <tr>
+    <td>4'b0010</td>
+    <td>multiplication</td>
+  </tr>
+  <tr>
+    <td>4'b0011</td>
+    <td>division</td>
+  </tr>
+  <tr>
+    <td>4'b0100</td>
+    <td>left shift</td>
+  </tr>
+  <tr>
+    <td>4'b0101</td>
+    <td>right shift</td>
+  </tr>
+  
+  <tr>
+    <td>4'b0110</td>
+    <td>logical and</td>
+  </tr>
+  <tr>
+    <td>4'b0111</td>
+    <td>logical or</td>
+  </tr>
+  <tr>
+    <td>4'b1000</td>
+    <td>logical xor</td>
+  </tr>
+  <tr>
+    <td>4'b1001</td>
+    <td>nand</td>
+  </tr>
+  <tr>
+    <td>4'b1010</td>
+    <td>nor</td>
+  </tr>
+  <tr>
+    <td>4'b1011</td>
+    <td>xnor</td>
+  </tr>
+  <tr>
+    <td>4'b1100</td>
+    <td>rotate left</td>
+  </tr>
+  <tr>
+    <td>4'b1101</td>
+    <td>rotate left</td>
+  </tr>
+  <tr>
+    <td>4'b1110</td>
+    <td>rotate left</td>
+  </tr>
 </table>
-/* ALU Arithmetic and Logic Operations
-----------------------------------------------------------------------
-|ALU_Sel|   ALU Operation
-----------------------------------------------------------------------
-| 0000  |   ALU_Out = A + B;
-----------------------------------------------------------------------
-| 0001  |   ALU_Out = A - B;
-----------------------------------------------------------------------
-| 0010  |   ALU_Out = A * B;
-----------------------------------------------------------------------
-| 0011  |   ALU_Out = A / B;
-----------------------------------------------------------------------
-| 0100  |   ALU_Out = A << 1;
-----------------------------------------------------------------------
-| 0101  |   ALU_Out = A >> 1;
-----------------------------------------------------------------------
-| 0110  |   ALU_Out = A rotated left by 1;
-----------------------------------------------------------------------
-| 0111  |   ALU_Out = A rotated right by 1;
-----------------------------------------------------------------------
-| 1000  |   ALU_Out = A and B;
-----------------------------------------------------------------------
-| 1001  |   ALU_Out = A or B;
-----------------------------------------------------------------------
-| 1010  |   ALU_Out = A xor B;
-----------------------------------------------------------------------
-| 1011  |   ALU_Out = A nor B;
-----------------------------------------------------------------------
-| 1100  |   ALU_Out = A nand B;
-----------------------------------------------------------------------
-| 1101  |   ALU_Out = A xnor B;
-----------------------------------------------------------------------
-| 1110  |   ALU_Out = 1 if A>B else 0;
-----------------------------------------------------------------------
-| 1111  |   ALU_Out = 1 if A=B else 0;
-----------------------------------------------------------------------*/
+the code used is given below,
+```
+module VGSS_ALU(
+	input [31:0] ALU_IN1,ALU_IN2,
+	input [3:0] ALU_SEL,
+	output reg [31:0] ALU_OUT);
+always@(*)
+begin
+case(ALU_SEL)
+4'b0000:
+ALU_OUT = ALU_IN1 + ALU_IN2;
+4'b0001:
+ALU_OUT = ALU_IN1 - ALU_IN2;
+4'b0010:
+ALU_OUT = ALU_IN1 * ALU_IN2;
+4'b0011:
+ALU_OUT = ALU_IN1 / ALU_IN2;
+4'b0100:
+ALU_OUT = ALU_IN1 << ALU_IN2;
+4'b0101:
+ALU_OUT = ALU_IN1 >> ALU_IN2;
+4'b0110:
+ALU_OUT = ALU_IN1 & ALU_IN2;
+4'b0111:
+ALU_OUT = ALU_IN1 | ALU_IN2;
+4'b1000:
+ALU_OUT = ALU_IN1 ^ ALU_IN2;
+4'b1000:
+ALU_OUT = ~(ALU_IN1 & ALU_IN2);
+4'b1001:
+ALU_OUT = ~(ALU_IN1 | ALU_IN2);
+4'b1010:
+ALU_OUT = ~(ALU_IN1 ^ ALU_IN2);
+4'b1011:
+ALU_OUT = ALU_IN1 >>> ALU_IN2;
+4'b1100:
+ALU_OUT = {ALU_IN1[30:0],ALU_IN1[31]};
+4'b1101:
+ALU_OUT = {ALU_IN1[0],ALU_IN1[31:1]};
+4'b1110:
+ALU_OUT = (ALU_IN1 == ALU_IN2)?32'b0 : 32'b1;
+4'b1111:
+ALU_OUT = ~(ALU_IN1);
+default: ALU_OUT = ALU_IN1;
+endcase
+end
+endmodule
+```
 <!---
 | S<sub>0</sub> | S<sub>1</sub> | Out |
 |    :----:   |    :----:   |    :----:   |
@@ -81,165 +146,38 @@ The ALU operations is as shown below,
 |1|0|B|
 |1|1|A|
 --->
-The reference circuit is as shown below in Figure(2)
-<figure>
-<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/4to1_MUX_using_CMOS_Logic/blob/main/Images/cir_img.png" width="600" height ="500"></p>
-<figcaption><p align = "center">Figure(2) Reference Circuit</p></figcaption>
-</figure>
-
-As per the reference circuit, the 4:1 MUX is designed using CMOS logic and both the Pull-up (made of the PMOS) and pull-down (made of the NMOS) networks pull the output to the input data lines, and the input select lines are given to the MOSFETs' gates.
-
 ## Working of the Circuit
 
 - When both the select lines are logic 0, NMOS in the pull-down network and PMOS  in the pull-up network of D input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the D input line.
 - When select lines 0 is logic 0 and select line 1 is logic 1, NMOS in the pull-down network and PMOS  in the pull-up network of C input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the C input line.
 - When select lines 0 is logic 1 and select line 1 is logic 0, NMOS in the pull-down network and PMOS  in the pull-up network of B input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the B input line.
 - When both the select lines are logic 1, NMOS in the pull-down network and PMOS  in the pull-up network of A input line becomes shoert circuited and pull-up and pull-down networks of all other input lines becomes open circuit and the output becomes the A input line.
-
-## Implemented Design
-
-By opening the lab instance then creating a  new folder and opening it in terminal we have to create a lib.def file and load the PDK into it. Then we have to access the server and launch the Synopsys custom compiler tool. After that by opening and creating a library and a new cell in it and a schematic view for it we have to implement the design and then Check and Save the design. 
-
-The schematic of the implemented design is as shown below in Figure(3)
-<figure>
-<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/4to1_MUX_using_CMOS_Logic/blob/main/Images/Schematic%20of%20Design.png" width="700" height ="600"></p>
-<figcaption><p align = "center">Figure(3) Implemented Circuit Schematic</p></figcaption>
-</figure>
-
-After that we have to create a symbol view for the above schematic view and then Check and Save it.  
-
-The symbol of the implemented design is as shown below in Figure(4)
-<figure>
-<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/4to1_MUX_using_CMOS_Logic/blob/main/Images/cir_imp_sym.png" width="300" height ="400"></p>
-<figcaption><p align = "center">Figure(4) Implemented Circuit Symbol</p></figcaption>
-</figure>
-
-After creating the symbol view create another cell in the library fro testbench and create the schematic view and then Check and Save it. 
-
-The schematic of the testbench of the design is as shown below in Figure(5)
-<figure>
-<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/4to1_MUX_using_CMOS_Logic/blob/main/Images/tb_imp_sch.png" width="900" height ="700"></p>
-<figcaption><p align = "center">Figure(5) Implemented Testbench Circuit Schematic</p></figcaption>
-</figure>
-
 ## Output Waveforms
 
-For simulation purpose we have to iniate the primewave tool and give model files, mode of analysis and select the parameters from the schematic to be observed under waveview. Then save the state and generate a Netlist and Run the simulation. 
 
-The output waveforms obtained after the simulation are as shown below in Figure(6)
+The output waveforms obtained after the simulation are as shown below
 <figure>
-<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/4to1_MUX_using_CMOS_Logic/blob/main/Images/op_waveform.png" width="1000" height ="300"></p>
-<figcaption><p align = "center">Figure(5) Implemented Testbench Circuit Schematic</p></figcaption>
+<p align="center"><img src=""https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(366).png" width="1000" height ="300"></p>
+<figcaption><p align = "center"> Waveforms obtained</p></figcaption>
 </figure>
 
-## Schematic Netlist
-
-The final Netlist is as follows:
-```
-*  Generated for: PrimeSim
-*  Design library name: cir_lib_1
-*  Design cell name: cir_cell_1_tb
-*  Design view name: schematic
-.lib 'saed32nm.lib' TT
-
-*Custom Compiler Version S-2021.09
-*Tue Mar  1 14:38:15 2022
-
-.global gnd! vdd!
-********************************************************************************
-* Library          : cir_lib_1
-* Cell             : cir_cell_1
-* View             : schematic
-* View Search List : hspice hspiceD schematic spice veriloga
-* View Stop List   : hspice hspiceD
-********************************************************************************
-.subckt cir_cell_1 a b c d s1 s1_bar s2 s2_bar out vt_bulk_n_gnd! vt_bulk_p_vdd!
-xm8 out s2_bar net27 vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm7 net27 s1_bar d vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm6 net19 s1_bar c vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm5 out s2_bar net18 vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm3 out s2 net19 vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm2 net18 s1 b vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm1 out s2 net56 vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm0 net56 s1 a vt_bulk_n_gnd! n105 w=0.1u l=0.03u nf=1 m=1
-xm17 net54 s2_bar out vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-xm16 a s1_bar net54 vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-xm15 net48 s2 out vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-xm14 b s1_bar net48 vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-xm13 net42 s2_bar out vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-xm11 c s1 net42 vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-xm10 d s1 net31 vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-xm9 net31 s2 out vt_bulk_p_vdd! p105 w=0.1u l=0.03u nf=1 m=1
-.ends cir_cell_1
-
-********************************************************************************
-* Library          : cir_lib_1
-* Cell             : cir_cell_1_tb
-* View             : schematic
-* View Search List : hspice hspiceD schematic spice veriloga
-* View Stop List   : hspice hspiceD
-********************************************************************************
-xi0 a_in b_in c_in d_in s1_select_in s1_bar s2_select_in s2_bar output gnd! vdd!
-+  cir_cell_1
-v23 b_in gnd! dc=0 pulse ( 0.8 0 0 0.001 0.001 2 4 )
-v22 a_in gnd! dc=0 pulse ( 0.8 0 0 0.001 0.001 1 2 )
-v24 c_in gnd! dc=0 pulse ( 0.8 0 0 0.001 0.001 4 8 )
-v31 s2_select_in gnd! dc=0 pulse ( 0.8 0 0 0.001 0.001 2 4 )
-v30 s2_bar gnd! dc=0 pulse ( 0 0.8 0 0.001 0.001 2 4 )
-v29 s1_bar gnd! dc=0 pulse ( 0 0.8 0 0.001 0.001 1 2 )
-v28 s1_select_in gnd! dc=0 pulse ( 0.8 0 0 0.001 0.001 1 2 )
-v27 d_in gnd! dc=0 pulse ( 0.8 0 0 0.001 0.001 8 16 )
-c33 output gnd! c=1p
-
-
-
-
-
-
-
-
-.tran '0.1' '20' name=tran
-
-.option primesim_remove_probe_prefix = 0
-.probe v(*) i(*) level=1
-.probe tran v(a_in) v(b_in) v(c_in) v(d_in) v(s1_bar) v(s1_select_in) v(s2_bar)
-+ v(s2_select_in) v(output)
-
-.temp 25
-
-
-
-.option primesim_output=wdf
-
-
-.option parhier = LOCAL
-
-
-
-
-
-
-.end
-```
 ## Challenges and limitations
-- The main challange is to have less rise time, fall time and propagation delay for the input which includes adjusting W/L ratio of the NMOSFETSs and PMOSFETSs.
-- The same logic can be implemented using only 8 MOSFETs either NMOS or PMOS at same technology node but by using the CMOS we can have high propagation speed but the complexity of the design increases.
-
+- The main challange is to design the zero flag here the approah used is to use nor gate as the nor gate gives the output logic high when all the inputs are low.
+- the second challenge is the complexity due to the data width being 32 bits.
 ## References
-[1]. [Multiplexer Wikipedia](https://en.wikipedia.org/wiki/Multiplexer)
+[1] https://en.wikipedia.org/wiki/Arithmetic_logic_unit
+[2]	https://en.wikipedia.org/wiki/Zero_flag
 
-[2]. [Combinational Circuits Electronics Tutorials](https://www.electronicstutorials.ws/combination/comb_2.html)
-
-[3]. [CMOS Logic Electronics Turoials](https://www.electronics-tutorial.net/Digital-CMOSDesign/Pass-Transistor-Logic/4-1-multiplexer-using-CMOSlogic/)
 
 ## Acknowledgements
-- [Synopsys](https://www.synopsys.com/)
-- [IIT Hyderabad](https://iith.ac.in/)
-- [Analog Cloud Based Hackathon](https://hackathoniith.in/)
+- http://iitb.ac.in/
+- https://www.google.co.in/
+- https://fossee.in/
+- https://spoken-tutorial.org/
+- https://www.vlsisystemdesign.com/
+- https://www.c2s.gov.in/
 - [VLSI System Design](https://www.vlsisystemdesign.com/)
 - [Kunal Ghosh](https://www.linkedin.com/in/kunal-ghosh-vlsisystemdesign-com-28084836/)
-- [Chinmaya Panda](https://ee.iith.ac.in/images/staff/panda.jpeg)
 - [Sumanto Kar](https://www.linkedin.com/in/sumanto-kar-0424391a9/)
-- [Sameer Durgoji](https://www.linkedin.com/in/sameer-s-durgoji-340b26180/)
 ## Author
-[Gaeya Sri Satya Vinnakota](https://www.linkedin.com/in/vgss/), BTech III year, Electronics Engineering Department, [Sardar Vallabhbhai National Institute Of Technology](https://www.svnit.ac.in/)
+[Gaeya Sri Satya Vinnakota](https://www.linkedin.com/in/vgss/), BTech IV year, Electronics Engineering Department, [Sardar Vallabhbhai National Institute Of Technology](https://www.svnit.ac.in/)

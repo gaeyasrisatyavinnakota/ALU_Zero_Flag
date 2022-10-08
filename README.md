@@ -17,39 +17,62 @@ This report describes the design and Implementation of 32 bit ALU with zero flag
 ## Details of the Circuit
 Circuit designed is as shown below
 <figure>
-<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(367)" width="300" height ="300"></p>
+<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(367).png" width="300" height ="300"></p>
 <figcaption><p align = "center">Figure(1) 4:1 MUX Representation</p></figcaption>
 </figure>
 
-The truth table of the 4:1 MUX is as shown,
+The ALU operations is as shown below,
 
 <table align="center">
   <tr>
-    <th>S<sub>0</sub></th>
-    <th>S<sub>1</sub></th>
-    <th>Out</th>
+    <th>ALU_Sel</th>
+    <th>operation</th>
   </tr>
   <tr>
-    <td>0</td>
-    <td>0</td>
-    <td>D</td>
+    <td>4'b000</td>
+    <td>addition</td>
   </tr>
   <tr>
-    <td>0</td>
-    <td>1</td>
-    <td>C</td>
-  </tr>
-   <tr>
-    <td>1</td>
-    <td>0</td>
-    <td>B</td>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>1</td>
-    <td>A</td>
+    <td>4'b0001</td>
+    <td>Subtraction</td>
   </tr>
 </table>
+/* ALU Arithmetic and Logic Operations
+----------------------------------------------------------------------
+|ALU_Sel|   ALU Operation
+----------------------------------------------------------------------
+| 0000  |   ALU_Out = A + B;
+----------------------------------------------------------------------
+| 0001  |   ALU_Out = A - B;
+----------------------------------------------------------------------
+| 0010  |   ALU_Out = A * B;
+----------------------------------------------------------------------
+| 0011  |   ALU_Out = A / B;
+----------------------------------------------------------------------
+| 0100  |   ALU_Out = A << 1;
+----------------------------------------------------------------------
+| 0101  |   ALU_Out = A >> 1;
+----------------------------------------------------------------------
+| 0110  |   ALU_Out = A rotated left by 1;
+----------------------------------------------------------------------
+| 0111  |   ALU_Out = A rotated right by 1;
+----------------------------------------------------------------------
+| 1000  |   ALU_Out = A and B;
+----------------------------------------------------------------------
+| 1001  |   ALU_Out = A or B;
+----------------------------------------------------------------------
+| 1010  |   ALU_Out = A xor B;
+----------------------------------------------------------------------
+| 1011  |   ALU_Out = A nor B;
+----------------------------------------------------------------------
+| 1100  |   ALU_Out = A nand B;
+----------------------------------------------------------------------
+| 1101  |   ALU_Out = A xnor B;
+----------------------------------------------------------------------
+| 1110  |   ALU_Out = 1 if A>B else 0;
+----------------------------------------------------------------------
+| 1111  |   ALU_Out = 1 if A=B else 0;
+----------------------------------------------------------------------*/
 <!---
 | S<sub>0</sub> | S<sub>1</sub> | Out |
 |    :----:   |    :----:   |    :----:   |

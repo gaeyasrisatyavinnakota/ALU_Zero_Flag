@@ -145,7 +145,7 @@ endmodule
 
 The output waveforms obtained after the simulation are as shown below
 <figure>
-<p align="center"><img src=""https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(365).png" width="1000" height ="300"></p>
+<p align="center"><img src="https://github.com/gaeyasrisatyavinnakota/ALU_Zero_Flag/blob/main/Screenshot%20(365).png" width="1000" height ="300"></p>
 <figcaption><p align = "center"> Waveforms obtained</p></figcaption>
 </figure>
 
